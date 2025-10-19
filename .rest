@@ -15,11 +15,11 @@ Content-Type: application/json
 
 ### 
 # Get a single homework by ID
-GET http://localhost:8080/homework/<ID_HERE>
+GET http://localhost:8080/homework/68f48c4324e07df6fe096625
 Accept: application/json
 
 ### 
 # Delete a homework by ID
 # Replace <ID_HERE> with an actual MongoDB _id
-DELETE http://localhost:8080/homework/68f4829ee17121476360d8d8
+DELETE http://localhost:8080/homework/68f48c4324e07df6fe096625
 Accept: application/json
