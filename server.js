@@ -20,11 +20,11 @@ app.use(express.json());
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Routes
 const homeworkRoutes = require('./routes/homework');
-app.use('/homework', homeworkRoutes);
+app.use('/homework', homeworkRoutes); 
 
 // Base route
 app.get('/', (req, res) => {
