@@ -10,26 +10,27 @@ Content-Type: application/json
 
 {
   "title": "Homework 1",
-  "description": "Math exercises for Chapter 2",
-  "dueDate": "2025-10-30"
+  "description": "Assignment 1",
+  "dueDate": "2025-10-30",
+  "completed":true
 }
 
 ###
 # Get a single homework by ID
-GET http://localhost:8080/homework/68fd27c7f132163c0e94eec9
+GET http://localhost:8080/homework/68fd3a46496a071f6ce26766
 Accept: application/json
 
 ###
 # Update a homework by ID
-PUT http://localhost:8080/homework/68fd27c7f132163c0e94eec9
+PUT http://localhost:8080/homework/68fd3a46496a071f6ce26766
 Content-Type: application/json
 
 {
   "title": "Updated Homework Title",
-  "completed": true
+  "completed": false
 }
 
 ###
 # Delete a homework by ID
-DELETE http://localhost:8080/homework/68fd27c7f132163c0e94eec9
+DELETE http://localhost:8080/homework/68fd3a7d496a071f6ce26768
 Accept: application/json

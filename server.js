@@ -26,7 +26,7 @@ const homeworkRoutes = require('./routes/homework');
 app.use('/homework', homeworkRoutes); 
 
 // Swagger docs
-setupSwagger(app); // call the function here
+setupSwagger(app); 
 
 // Base route
 app.get('/', (req, res) => {
