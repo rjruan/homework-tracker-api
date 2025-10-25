@@ -1,25 +1,35 @@
-### 
+###
 # Get all homeworks
 GET http://localhost:8080/homework
 Accept: application/json
 
-### 
+###
 # Create a new homework
 POST http://localhost:8080/homework
 Content-Type: application/json
 
 {
   "title": "Homework 1",
-  "description": "Math exercises for Chapter 2"
+  "description": "Math exercises for Chapter 2",
+  "dueDate": "2025-10-30"
 }
 
-### 
+###
 # Get a single homework by ID
-GET http://localhost:8080/homework/68f48c4324e07df6fe096625
+GET http://localhost:8080/homework/68fd27c7f132163c0e94eec9
 Accept: application/json
 
-### 
+###
+# Update a homework by ID
+PUT http://localhost:8080/homework/68fd27c7f132163c0e94eec9
+Content-Type: application/json
+
+{
+  "title": "Updated Homework Title",
+  "completed": true
+}
+
+###
 # Delete a homework by ID
-# Replace <ID_HERE> with an actual MongoDB _id
-DELETE http://localhost:8080/homework/68f48c4324e07df6fe096625
+DELETE http://localhost:8080/homework/68fd27c7f132163c0e94eec9
 Accept: application/json

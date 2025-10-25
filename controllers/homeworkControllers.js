@@ -1,4 +1,4 @@
-const Homework = require('../models/homeworkModel');
+const Homework = require('../models/homework');
 
 // GET all
 const getAllHomeworks = async (req, res) => {
@@ -10,6 +10,20 @@ const getAllHomeworks = async (req, res) => {
   }
 };
 
+//GET single
+const getHomeworkById = async (req, res) => {
+  try {
+    const homework = await Homework.findById(req.params.id);
+    if (!homework) {
+      return res.status(404).json({ message: 'Homework not found' });
+    }
+    res.status(200).json(homework);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 // POST new
 const createHomework = async (req, res) => {
   try {
@@ -18,6 +32,30 @@ const createHomework = async (req, res) => {
     res.status(201).json(saved);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+// Update homework by ID
+const updateHomework = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, completed } = req.body;
+
+  try {
+    const updatedHomework = await Homework.findByIdAndUpdate(
+      id,
+      { title, completed },
+      { new: true }
+    );
+
+    if (!updatedHomework) {
+      const error = new Error('Homework not found');
+      error.status = 404;
+      throw error;
+    }
+
+    res.json(updatedHomework);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -37,4 +75,11 @@ const deleteHomework = async (req, res) => {
   }
 };
 
-module.exports = { getAllHomeworks, createHomework,deleteHomework };
+module.exports = {
+  getAllHomeworks,
+  getHomeworkById,
+  createHomework,
+  deleteHomework,
+  updateHomework
+};
+

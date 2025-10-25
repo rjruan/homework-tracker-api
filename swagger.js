@@ -1,4 +1,6 @@
-const swaggerJSDoc = require('swagger-jsdoc');
+// swagger.js
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const options = {
   definition: {
@@ -9,10 +11,18 @@ const options = {
       description: 'API for tracking homework tasks',
     },
     servers: [
-      { url: 'http://localhost:8080', description: 'Local server' },
+      {
+        url: 'http://localhost:8080',
+      },
     ],
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*.js'], // Point to your routes
 };
 
-module.exports = swaggerJSDoc(options);
+const specs = swaggerJsDoc(options);
+
+function setupSwagger(app) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+}
+
+module.exports = setupSwagger;
