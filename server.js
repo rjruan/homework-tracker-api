@@ -11,9 +11,12 @@ const setupSwagger = require('./swagger'); // import the swagger setup
 // Initialize express app
 const app = express();
 
+const projectRoutes = require('./routes/projects');
+
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/projects', projectRoutes);
 
 // MongoDB connection
 mongoose
