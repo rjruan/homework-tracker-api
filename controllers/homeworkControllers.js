@@ -59,6 +59,7 @@ const updateHomework = async (req, res, next) => {
   }
 };
 
+
 // DELETE by ID
 const deleteHomework = async (req, res) => {
   try {

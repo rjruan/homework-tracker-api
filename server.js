@@ -18,6 +18,25 @@ app.use(cors());
 app.use(express.json());
 app.use('/projects', projectRoutes);
 
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const passport = require('passport');
+require('./config/passport')(passport);
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'devsecret',
+  resave: false,
+  saveUninitialized: false,
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
+
 // MongoDB connection
 mongoose
   .connect(process.env.MONGODB_URI)
