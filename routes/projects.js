@@ -1,3 +1,4 @@
+const ensureAuth = require('../middleware/auth');
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
 const ctrl = require('../controllers/projectController');
@@ -25,5 +26,10 @@ router.delete('/:id',
   param('id').isMongoId().withMessage('Invalid id'),
   (req,res,next)=>{ const e=validationResult(req); if(!e.isEmpty()) return res.status(400).json({errors:e.array()}); next(); },
   ctrl.deleteProject);
+
+router.post('/', ensureAuth, createProject);
+router.put('/:id', ensureAuth, updateProject);
+router.delete('/:id', ensureAuth, deleteProject);
+
 
 module.exports = router;

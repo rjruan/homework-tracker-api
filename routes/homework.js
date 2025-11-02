@@ -1,3 +1,4 @@
+const ensureAuth = require('../middleware/auth');
 const express = require('express');
 const router = express.Router();
 const {
@@ -161,5 +162,9 @@ router.get('/:id', validateId, getHomeworkById);
 router.post('/', validateHomework, createHomework);
 router.put('/:id', validateId, validateHomework, updateHomework);
 router.delete('/:id', validateId, deleteHomework);
+router.post('/', ensureAuth, createHomework);
+router.put('/:id', ensureAuth, updateHomework);
+router.delete('/:id', ensureAuth, deleteHomework);
+
 
 module.exports = router;
