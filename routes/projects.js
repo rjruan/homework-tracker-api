@@ -1,35 +1,83 @@
-const ensureAuth = require('../middleware/auth');
 const express = require('express');
 const { body, param, validationResult } = require('express-validator');
-const ctrl = require('../controllers/projectController');
+
 const router = express.Router();
+const {
+  getAllProjects,
+  getProjectById,
+  createProject,
+  updateProject,
+  deleteProject
+} = require('../controllers/projectController');
 
-router.get('/', ctrl.getAllProjects);
+// auth middleware
+const ensureAuth = require('../middleware/auth');
 
-router.get('/:id',
+/**
+ * GET /projects
+ */
+router.get('/', async (req, res, next) => {
+  try {
+    return await getAllProjects(req, res, next);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * GET /projects/:id
+ */
+router.get(
+  '/:id',
   param('id').isMongoId().withMessage('Invalid id'),
-  (req,res,next)=>{ const e=validationResult(req); if(!e.isEmpty()) return res.status(400).json({errors:e.array()}); next(); },
-  ctrl.getProjectById);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    return getProjectById(req, res, next);
+  }
+);
 
-router.post('/',
+/**
+ * POST /projects  (protected)
+ */
+router.post(
+  '/',
+  ensureAuth,
   body('title').notEmpty().withMessage('title required'),
   body('ownerId').notEmpty().isMongoId().withMessage('ownerId required'),
-  (req,res,next)=>{ const e=validationResult(req); if(!e.isEmpty()) return res.status(400).json({errors:e.array()}); next(); },
-  ctrl.createProject);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    return createProject(req, res, next);
+  }
+);
 
-router.put('/:id',
+/**
+ * PUT /projects/:id  (protected)
+ */
+router.put(
+  '/:id',
+  ensureAuth,
   param('id').isMongoId().withMessage('Invalid id'),
-  (req,res,next)=>{ const e=validationResult(req); if(!e.isEmpty()) return res.status(400).json({errors:e.array()}); next(); },
-  ctrl.updateProject);
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    return updateProject(req, res, next);
+  }
+);
 
-router.delete('/:id',
+/**
+ * DELETE /projects/:id (protected)
+ */
+router.delete(
+  '/:id',
+  ensureAuth,
   param('id').isMongoId().withMessage('Invalid id'),
-  (req,res,next)=>{ const e=validationResult(req); if(!e.isEmpty()) return res.status(400).json({errors:e.array()}); next(); },
-  ctrl.deleteProject);
-
-router.post('/', ensureAuth, createProject);
-router.put('/:id', ensureAuth, updateProject);
-router.delete('/:id', ensureAuth, deleteProject);
-
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    return deleteProject(req, res, next);
+  }
+);
 
 module.exports = router;

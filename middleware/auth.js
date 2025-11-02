@@ -1,5 +1,4 @@
 module.exports = function ensureAuth(req, res, next) {
-    // passport adds req.isAuthenticated()
     if (req.isAuthenticated && req.isAuthenticated()) return next();
     return res.status(401).json({ error: 'Unauthorized' });
   };

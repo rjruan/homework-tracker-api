@@ -1,3 +1,5 @@
+console.log('DEBUG: GOOGLE_CLIENT_ID=', process.env.GOOGLE_CLIENT_ID ? 'SET' : 'MISSING');
+console.log('DEBUG: OAuth callbackURL will be:', `${process.env.BASE_URL || 'http://localhost:8080'}/auth/google/callback`);
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/user');
 
