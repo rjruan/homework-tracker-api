@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
-const projectSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: String,
-  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  status: { type: String, enum: ['idea','active','completed','archived'], default: 'idea' },
-  priority: { type: String, enum: ['low','medium','high'], default: 'medium' },
-  startDate: Date,
-  dueDate: Date,
+const userSchema = new mongoose.Schema({
+  googleId: { type: String, unique: true, sparse: true },
+  email: { type: String, unique: true, sparse: true },
+  name: String,
+  picture: String,
+  role: { type: String, default: 'student' },
   createdAt: { type: Date, default: Date.now },
-  tags: [String]
+  lastLogin: Date,
+  preferences: {
+    notifications: { type: Boolean, default: true },
+    theme: { type: String, default: 'light' }
+  }
 });
 
-module.exports = mongoose.model('Project', projectSchema);
+module.exports = mongoose.model('User', userSchema);

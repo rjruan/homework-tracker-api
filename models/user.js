@@ -8,7 +8,10 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'student' },
   createdAt: { type: Date, default: Date.now },
   lastLogin: Date,
-  preferences: { notifications: { type: Boolean, default: true }, theme: { type: String, default: 'light' } }
+  preferences: {
+    notifications: { type: Boolean, default: true },
+    theme: { type: String, default: 'light' }
+  }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);
