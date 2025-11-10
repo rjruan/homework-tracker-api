@@ -1,4 +1,6 @@
 const Homework = require('../models/homework');
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
 // GET all
 const getAllHomeworks = async (req, res) => {
@@ -75,6 +77,16 @@ const deleteHomework = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+async function signup(req, res) {
+  const { email, password, name } = req.body;
+  if (!email || !password) return res.status(400).json({ error: 'Missing fields' });
+  const hash = await bcrypt.hash(password, 10);
+  const u = new User({ email, passwordHash: hash, name });
+  await u.save();
+  res.status(201).json({ id: u._id });
+}
+module.exports = { signup };
 
 module.exports = {
   getAllHomeworks,

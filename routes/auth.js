@@ -1,19 +1,30 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
+const ensureAuth = require('../middleware/auth'); 
 
-router.get('/google', passport.authenticate('google', { scope: ['profile','email'] }));
+// --- Authentication routes ---
 
+// Google login
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Google callback
 router.get('/google/callback',
-  passport.authenticate('google', { failureRedirect: '/auth/failure' }),
+  passport.authenticate('google', { failureRedirect: '/login' }),
   (req, res) => {
-    res.redirect(process.env.FRONTEND_URL || '/');
+    res.redirect(process.env.BASE_URL || '/');
+  }
+);
+
+// Logout
+router.get('/logout', (req, res) => {
+  req.logout(() => {});
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
   });
-
-router.get('/failure', (req, res) => res.status(401).json({ message: 'Auth failed' }));
-
-router.get('/logout', (req, res, next) => {
-  req.logout((err) => { if (err) return next(err); res.redirect(process.env.FRONTEND_URL || '/'); });
 });
 
 module.exports = router;

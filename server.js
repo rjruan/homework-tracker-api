@@ -1,12 +1,10 @@
-// Load environment variables
-const dotenv = require('dotenv');
-dotenv.config();
+require('dotenv').config();
 
 // Import dependencies
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const setupSwagger = require('./swagger'); // import the swagger setup
+const setupSwagger = require('./swagger');
 
 // Initialize express app
 const app = express();
@@ -17,6 +15,7 @@ const projectRoutes = require('./routes/projects');
 app.use(cors());
 app.use(express.json());
 app.use('/projects', projectRoutes);
+const config = require('dotenv').config()
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -64,3 +63,9 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app._router.stack.forEach(r => {
+  if (r.route && r.route.path) {
+    console.log(r.route.path, Object.keys(r.route.methods));
+  }
+});
